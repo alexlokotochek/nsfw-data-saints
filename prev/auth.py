@@ -169,7 +169,7 @@ class PhotosHandler(tornado.web.RequestHandler):
         # msg = self.get_body_argument("message")
         # user_id = msg
         # print('user:', user_id)
-        # phts = get_photos(user_id)[:100]
+        # phts = get_photos(user_id)[:20]
         # print('photos:', len(phts))
         # res = all_photos(phts)
         # print('alco_photos:', len(res), '/', len(phts))
@@ -181,9 +181,26 @@ class PhotosHandler(tornado.web.RequestHandler):
 class HelloHandler(tornado.web.RequestHandler):
     def get(self):
         self.set_header("Content-Type", "text/html")
-        self.write('<html><body><form method="POST" action="https://oauth.vk.com/authorize?client_id=6309323&display=mobile&redirect_uri=http://ec2-34-242-141-128.eu-west-1.compute.amazonaws.com/authorize&scope=photos&response_type=code&v=5.69">'
-                   '<input type="submit" value="authorize me!">'
-                   '</form></body></html>')
+        self.write('<html>'
+                   '<head>'
+                   '<style>'
+                        'body {'
+                            'background-image: url("http://www.wholehealthllc.com/wp-content/uploads/2016/02/BeerCheersField.jpg");'
+                            'background-color: #00ffff;'
+                            'height: 100%;'
+                            'background-position: center;'
+                            'background-repeat: no-repeat;'
+                            'background-size: cover;'
+                        '}'
+                   '</style>'
+                   '</head>'
+                   '<body><form method="POST" action="https://oauth.vk.com/authorize?client_id=6309323&display=mobile&redirect_uri=http://ec2-34-242-141-128.eu-west-1.compute.amazonaws.com/authorize&scope=photos&response_type=code&v=5.69">'
+                   '<p align="center">'
+                   '<input type="submit" style="background-color:lightblue;margin-left:auto;margin-right:auto;display:block;margin-top:22%;margin-bottom:0%" value="authorize me!">'
+                   '</p>'
+                   '</form>'
+                   '</body>'
+                   '</html>')
 
 
 class AuthorizedHandler(tornado.web.RequestHandler):
@@ -198,10 +215,17 @@ class AuthorizedHandler(tornado.web.RequestHandler):
         text = json.loads(text)
         print(text)
         user_id, access_token = text['user_id'], text['access_token']
-        phts = get_photos(user_id, access_token)[:100]
-        res = all_photos(phts)
+        phts = get_photos(user_id, access_token)[:10]
+        res = []
+        if len(phts) > 0:
+            res = all_photos(phts)
         print('alco_photos:', len(res), '/', len(phts))
+        if len(res) == 0:
+            self.write("You are boring! Go take a beer")
+        else:
+            self.write("Keep the best moments in memory... as possible")
         for img_url in res:
+            self.write("""<br>.</br>""")
             self.write("""<br><img src="{0}"/>""".format(img_url))
 
 

@@ -139,7 +139,7 @@ def get_trues_alco(imgs, phts):
     request.model_spec.signature_name = 'predict_images'
     request.inputs['images'].CopyFrom(
         tf.contrib.util.make_tensor_proto(np.array(imgs), shape=[len(imgs)]))
-    result = stub.Predict(request, 1000000.0) # 10 secs timeout
+    result = stub.Predict(request, 360) # 10 secs timeout
     all_tags= result.outputs['classes'].string_val
     alco_photos = []
     for i in range(5*len(imgs)//5):
@@ -161,9 +161,11 @@ class MyFormHandler(tornado.web.RequestHandler):
         self.set_header("Content-Type", "text/html")
         msg = self.get_body_argument("message")
         user_id = msg
-        phts = get_photos(user_id)[:50]
+        print('user:', user_id)
+        phts = get_photos(user_id)[:100]
+        print('photos:', len(phts))
         res = all_photos(phts)
-        
+        print('alco_photos:', len(res), '/', len(phts))
         for img_url in res:
             self.write("""<br><img src="{0}"/>""".format(img_url))
 
