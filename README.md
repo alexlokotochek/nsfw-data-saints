@@ -14,8 +14,11 @@ works few times faster but necessary to normalize images: (/255. - .5) * 2 and p
 ```
 $ curl -sSL https://raw.githubusercontent.com/bitnami/bitnami-docker-tensorflow-inception/master/docker-compose.yml > docker-compose.yml
 $ docker-compose up -d
+```
 
-docker-compose.yml:
+
+# docker-compose.yml:
+```
 version: '2'
 
 services:
@@ -45,23 +48,26 @@ volumes:
 start docker container:
 ```
 $ docker run -d -v /tmp/model-data:/bitnami/model-data -p 9000:9000 --name tensorflow-serving --net tensorflow-tier bitnami/tensorflow-serving:latest
+```
 
 start serving inception:
-
+```
 docker run -d --name tensorflow-inception \
   --net tensorflow-tier \
   --volume /path/to/tensorflow-inception-persistence:/bitnami \
   --volume /path/to/model_data:/bitnami/model-data \
   bitnami/tensorflow-inception:latest
+```
 
-
-Prediction of 1000 classes from terminal basel inception client:
-
+# Prediction of 1000 classes from terminal basel inception client:
+```
 $ docker run --name tensorflow-inception -d bitnami/tensorflow-inception:latest
 $ docker exec tensorflow-inception inception_client --server=SERVER_IP:9000 --image=/opt/bitnami/tensorflow-inception/tensorflow/tensorflow/contrib/ios_examples/benchmark/data/grace_hopper.jpg
+```
 
-Python client:
-auth.py; alco.py
+
+# Python client:
+# auth.py; alco.py
 ```
 
 
