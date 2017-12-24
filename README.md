@@ -67,7 +67,8 @@ $ docker exec tensorflow-inception inception_client --server=SERVER_IP:9000 --im
 
 
 # Python client:
-# auth.py; alco.py
+```
+auth.py; alco.py
 ```
 
 
