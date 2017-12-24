@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+
+    <img src={{ escape(image) }} width=200 height=200 />
+    <br>
+    <br>
+    {% for property in transfer_values %}
+      <b  style="display: inline-block;">{{ escape(property[0]) }}:</b>
+      <div  style="display: inline-block;">{{ escape(property[1]) }}</div>
+    {% end %}
+    <br>
+    <br>
+    <div  style="display: inline-block;">{{ escape(alcoholic) }}</div>
+
+  </body>
+</html>
+
